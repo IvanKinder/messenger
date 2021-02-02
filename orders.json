@@ -1,1 +1,11 @@
-{"orders": []}
+{
+    "orders": [
+        {
+            "item": "apple",
+            "quantity": 12000,
+            "price": 200,
+            "buyer": "John Dorian",
+            "date": "02.02.2022"
+        }
+    ]
+}
