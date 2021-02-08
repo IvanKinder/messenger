@@ -1,12 +1,17 @@
+import json
 
 
 def get_data_from_message(response: bytes):
-    return response.decode('utf-8')
+    data_parse = json.loads(response)
+    return data_parse
 
 
 def send_message(data: dict):
-    pass
+    return json.dumps(data)
 
 
 def get_settings():
-    pass
+    with open('common/conf.json') as conf_file:
+        content = conf_file.read()
+        conf_set = json.loads(content)
+    return conf_set

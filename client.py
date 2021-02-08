@@ -1,26 +1,23 @@
 from socket import socket, AF_INET, SOCK_STREAM
-import json
 import time
 import sys
 
-with open('common/conf.json') as conf_file:
-    content = conf_file.read()
-    conf_set = json.loads(content)
-    default_host = conf_set['host']
-    default_port = conf_set['port']
+from common import utils
 
 host = ''
 port = 0
 
 if len(sys.argv) > 1:
     input_args = sys.argv[1].split(':')
-
+    host = input_args[0]
+    port = int(input_args[1])
 
 s = socket(AF_INET, SOCK_STREAM)
+
 if port and host:
     s.connect((host, port))
 else:
-    s.connect((default_host, default_port))
+    s.connect((utils.get_settings()['host'], utils.get_settings()['port']))
 
 msg_json = {
     "action": "presence",
@@ -32,11 +29,11 @@ msg_json = {
     }
 }
 
-msg = json.dumps(msg_json)
+msg = utils.send_message(msg_json)
 s.send(msg.encode('utf-8'))
 
 data = s.recv(4096)
-data_parse = json.loads(data)
+data_parse = utils.get_data_from_message(data)
 print(f'action: {data_parse["action"]}\ntime: {data_parse["time"]}')
 
 s.close()

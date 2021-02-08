@@ -1,17 +1,12 @@
 from socket import socket, AF_INET, SOCK_STREAM
-import json
 import time
 import sys
 
+from common import utils
 
 host = ''
 port = 0
 default_host = ''
-
-with open('common/conf.json') as conf_file:
-    content = conf_file.read()
-    conf_set = json.loads(content)
-    default_port = conf_set['port']
 
 if len(sys.argv) > 1:
     for i in range(len(sys.argv)):
@@ -26,17 +21,17 @@ if port or host:
     s.bind((host, port))
     s.listen(5)
 else:
-    s.bind((default_host, default_port))
+    s.bind((default_host, utils.get_settings()['port']))
     s.listen(5)
 
 while True:
     client, addr = s.accept()
     data = client.recv(4096)
-    print(data.decode('utf-8'))
+    print(utils.get_data_from_message(data))
     msg_json = {
         "action": "probe",
         "time": time.ctime(),
     }
-    msg = json.dumps(msg_json)
+    msg = utils.send_message(msg_json)
     client.send(msg.encode('utf-8'))
     client.close()
