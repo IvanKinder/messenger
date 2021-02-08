@@ -1,16 +1,33 @@
 from socket import socket, AF_INET, SOCK_STREAM
 import json
 import time
+import sys
 
+
+host = ''
+port = 0
+default_host = ''
 
 with open('common/conf.json') as conf_file:
     content = conf_file.read()
     conf_set = json.loads(content)
-    port = conf_set['port']
+    default_port = conf_set['port']
+
+if len(sys.argv) > 1:
+    for i in range(len(sys.argv)):
+        if sys.argv[i] == '-p':
+            port = int(sys.argv[i + 1])
+        if sys.argv[i] == '-a':
+            host = sys.argv[i + 1]
 
 s = socket(AF_INET, SOCK_STREAM)
-s.bind(('', port))
-s.listen(5)
+
+if port or host:
+    s.bind((host, port))
+    s.listen(5)
+else:
+    s.bind((default_host, default_port))
+    s.listen(5)
 
 while True:
     client, addr = s.accept()
