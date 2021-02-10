@@ -1,3 +1,0 @@
-b'class': <class 'bytes'>; len: 5
-b'function': <class 'bytes'>; len: 8
-b'method': <class 'bytes'>; len: 6
