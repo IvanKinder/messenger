@@ -41,6 +41,7 @@ def main():
     print(data_parse)
 
     s.close()
+    return data_parse
 
 
 if __name__ == '__main__':

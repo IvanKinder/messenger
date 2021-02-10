@@ -1,7 +1,5 @@
 import unittest
 from socket import socket, AF_INET, SOCK_STREAM
-
-import server
 from common.utils import get_data_from_message
 
 
@@ -16,4 +14,3 @@ class ServerTestCase(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
