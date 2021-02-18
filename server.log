@@ -1,3 +1,35 @@
-INFO       2021-02-12 10:53:27,186 use default host: 127.0.0.1
-INFO       2021-02-12 10:53:27,187 use default host: 127.0.0.1
-INFO       2021-02-12 10:53:27,188 use default host: 127.0.0.1
+INFO       2021-02-18 10:04:41,950 use default port: 7777
+INFO       2021-02-18 10:05:58,991 use default port: 7777
+INFO       2021-02-18 10:06:08,717 use default port: 7777
+INFO       2021-02-18 10:08:04,047 use default port: 7777
+INFO       2021-02-18 10:20:44,876 use default port: 7777
+INFO       2021-02-18 10:51:38,134 call function get_settings from file 'server.py'
+INFO       2021-02-18 10:51:38,135 use default port: 7777
+INFO       2021-02-18 10:51:38,138 call function get_settings from file 'server.py'
+INFO       2021-02-18 10:51:49,351 call function get_data_from_message from file 'server.py'
+INFO       2021-02-18 10:51:49,354 call function send_message from file 'server.py'
+INFO       2021-02-18 10:52:45,608 call function 'get_settings' from file 'server.py'
+INFO       2021-02-18 10:52:45,610 use default port: 7777
+INFO       2021-02-18 10:52:45,612 call function 'get_settings' from file 'server.py'
+INFO       2021-02-18 10:52:48,578 call function 'get_data_from_message' from file 'server.py'
+INFO       2021-02-18 10:52:48,584 call function 'send_message' from file 'server.py'
+INFO       2021-02-18 10:55:15,403 call function 'get_data_from_message' from file 'server.py'
+INFO       2021-02-18 10:55:15,406 call function 'send_message' from file 'server.py'
+INFO       2021-02-18 10:55:22,366 call function 'get_settings' from file             'server.py'
+INFO       2021-02-18 10:55:22,367 use default port: 7777
+INFO       2021-02-18 10:55:22,369 call function 'get_settings' from file             'server.py'
+INFO       2021-02-18 10:55:25,244 call function 'get_data_from_message' from file             'server.py'
+INFO       2021-02-18 10:55:25,252 call function 'send_message' from file             'server.py'
+INFO       2021-02-18 10:56:01,494 call function 'get_data_from_message' from file             'server.py'
+INFO       2021-02-18 10:56:01,500 call function 'send_message' from file             'server.py'
+INFO       2021-02-18 10:56:21,104 call function 'get_data_from_message' from file             'server.py'
+INFO       2021-02-18 10:56:21,107 call function 'send_message' from file             'server.py'
+INFO       2021-02-18 10:56:51,976 call function 'get_data_from_message' from file             'server.py'
+INFO       2021-02-18 10:56:51,982 call function 'send_message' from file             'server.py'
+INFO       2021-02-18 10:57:04,785 call function 'get_settings' from file 'server.py'
+INFO       2021-02-18 10:57:04,786 use default port: 7777
+INFO       2021-02-18 10:57:04,788 call function 'get_settings' from file 'server.py'
+INFO       2021-02-18 10:57:10,758 call function 'get_data_from_message' from file 'server.py'
+INFO       2021-02-18 10:57:10,761 call function 'send_message' from file 'server.py'
+INFO       2021-02-18 10:57:35,588 call function 'get_data_from_message' from file 'server.py'
+INFO       2021-02-18 10:57:35,592 call function 'send_message' from file 'server.py'
