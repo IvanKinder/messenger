@@ -1,58 +1,58 @@
-import logging
 from socket import socket, AF_INET, SOCK_STREAM
-import time
-import sys
-
-from log.server import server_log_config
-from common import utils
-
-logger = logging.getLogger('server_log_app')
+import select
 
 
-def main():
-    host = ''
-    port = 0
-    default_host = ''
-    if len(sys.argv) > 1:
-        for i in range(len(sys.argv)):
-            if sys.argv[i] == '-p':
-                if 1024 <= int(sys.argv[i + 1]) <= 65535:
-                    port = int(sys.argv[i + 1])
-                else:
-                    logger.info(f'use default port: {utils.get_settings()["port"]}')
-                    port = utils.get_settings()['port']
-            elif '-p' not in sys.argv:
-                logger.info(f'use default port: {utils.get_settings()["port"]}')
-                port = utils.get_settings()['port']
-            if sys.argv[i] == '-a':
-                host = sys.argv[i + 1]
-            elif '-a' not in sys.argv:
-                logger.info(f'use default host: {utils.get_settings()["host"]}')
-                host = utils.get_settings()['host']
+def read_requests(r_list, clients):
+    responses = {}
+    for sock in r_list:
+        try:
+            data = sock.recv(1024).decode('utf-8')
+            responses[sock] = data
+        except:
+            clients.remove(sock)
 
-    s = socket(AF_INET, SOCK_STREAM)
+    return responses
 
-    if port or host:
-        s.bind((host, port))
-        s.listen(5)
-    else:
-        logger.info(f'use default port: {utils.get_settings()["port"]}')
-        s.bind((default_host, utils.get_settings()['port']))
-        s.listen(5)
+
+def write_responses(requests, w_list, clients):
+    for sock in w_list:
+        for _, request in requests.items():
+            # if sock in requests:
+            try:
+                resp = request.encode('utf-8')
+                sock.send(resp)
+            except:
+                sock.close()
+                clients.remove(sock)
+
+
+def mainloop():
+    address = ('', 8888)
+    clients = []
+
+    sock = socket(AF_INET, SOCK_STREAM)
+    sock.bind(address)
+    sock.listen(5)
+    sock.settimeout(0.2)
 
     while True:
-        client, addr = s.accept()
-        data = client.recv(4096)
-        print(utils.get_data_from_message(data))
-        msg_json = {
-            "action": "probe",
-            "time": time.ctime(),
-            "status": 200
-        }
-        msg = utils.send_message(msg_json)
-        client.send(msg.encode('utf-8'))
-        client.close()
+        try:
+            conn, addr = sock.accept()
+        except OSError as e:
+            pass
+        else:
+            clients.append(conn)
+        finally:
+            r_list = []
+            w_list = []
+            try:
+                r_list, w_list, e_list = select.select(clients, clients, [], 10)
+            except:
+                pass
+            requests = read_requests(r_list, clients)
+            if requests:
+                write_responses(requests, w_list, clients)
 
 
-if __name__ == '__main__':
-    main()
+print('start server')
+mainloop()

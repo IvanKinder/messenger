@@ -1,63 +1,35 @@
-import logging
 from socket import socket, AF_INET, SOCK_STREAM
-import time
-import sys
-from log.client import client_log_config
-from common import utils
 
-logger = logging.getLogger('client_log_app')
+address = ('localhost', 8888)
 
 
-def main():
-    host = ''
-    port = 0
-    if len(sys.argv) > 1:
-        input_args = sys.argv[1].split(':')
-        try:
-            host = input_args[0]
-            port = int(input_args[1])
-        except IndexError:
-            logger.warning(f'incorrect port: {port}! Use default: {utils.get_settings()["port"]}')
-            port = utils.get_settings()['port']
-        except ValueError:
-            logger.warning(f'incorrect port: {port}')
+def out_red(text):
+    return "\033[31m{}" .format(text)
 
-    s = socket(AF_INET, SOCK_STREAM)
 
-    if port and host:
-        try:
-            s.connect((host, port))
-        except:
-            logger.critical(f'incorrect host: {host}')
-    else:
-        logger.info(f'use default host: {utils.get_settings()["host"]} and default port: {utils.get_settings()["port"]}')
-        s.connect((utils.get_settings()['host'], utils.get_settings()['port']))
+def out_white(text):
+    return "\033[37m{}" .format(text)
 
-    msg_json = {
-        "action": "presence",
-        "time": time.ctime(),
-        "type": "status",
-        "user": {
-            "account_name": "C0deMaver1ck",
-            "status": "Yep, I am here!"
-        }
-    }
 
-    msg = utils.send_message(msg_json)
-    try:
-        s.send(msg.encode('utf-8'))
-    except BrokenPipeError:
-        logger.critical(f'incorrect host: {host}')
-
-    try:
-        data = s.recv(4096)
-        data_parse = utils.get_data_from_message(data)
-        print(data_parse)
-        s.close()
-        return data_parse
-    except OSError:
-        logger.critical(f'incorrect host: {host}')
+def client():
+    with socket(AF_INET, SOCK_STREAM) as sock:
+        sock.connect(address)
+        my_choise = input('Если вы хотите принимать сообщения введите - 1;\nесли вводить сообщения - 2: ')
+        while True:
+            if my_choise == 'exit':
+                break
+            if my_choise == '2':
+                print(out_white('Для закрытия соединения введите exit'))
+                msg = input('Введите сообщение: ')
+                if msg == 'exit':
+                    my_choise = msg
+                sock.send(msg.encode('utf-8'))
+                data = sock.recv(1024).decode('utf-8')
+                print(out_white(f'Информация с сервера: {out_red(data)}\n'))
+            if my_choise == '1':
+                data = sock.recv(1024).decode('utf-8')
+                print(out_white(f'Информация с сервера: {out_red(data)}\n'))
 
 
 if __name__ == '__main__':
-    main()
+    client()
