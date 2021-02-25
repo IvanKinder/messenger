@@ -17,13 +17,15 @@ def read_requests(r_list, clients):
 def write_responses(requests, w_list, clients):
     for sock in w_list:
         for _, request in requests.items():
-            # if sock in requests:
             try:
                 resp = request.encode('utf-8')
                 sock.send(resp)
             except:
                 sock.close()
-                clients.remove(sock)
+                try:
+                    clients.remove(sock)
+                except ValueError:
+                    pass
 
 
 def mainloop():
